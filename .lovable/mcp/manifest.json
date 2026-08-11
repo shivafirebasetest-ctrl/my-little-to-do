@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://uwhxctldzzisupsyzjrc.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "my-little-to-do",
+      "version": "0.1.0",
+      "title": "My Little To-Do"
+    },
+    "tools": [
+      {
+        "name": "list_todos",
+        "title": "List tasks",
+        "description": "List the signed-in user's tasks, optionally filtered by completion state.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Which tasks to return. Defaults to all.",
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "completed"
+              ]
+            }
+          }
+        },
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "todos": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "created_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "text",
+                  "completed",
+                  "created_at"
+                ]
+              }
+            }
+          },
+          "required": [
+            "todos"
+          ]
+        }
+      },
+      {
+        "name": "create_todo",
+        "title": "Create task",
+        "description": "Add a new task for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "description": "What needs to be done."
+            }
+          },
+          "required": [
+            "text"
+          ]
+        },
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "todo": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "completed",
+                "created_at"
+              ]
+            }
+          },
+          "required": [
+            "todo"
+          ]
+        }
+      },
+      {
+        "name": "update_todo",
+        "title": "Update task",
+        "description": "Rename a task or change whether it is completed.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The task id."
+            },
+            "text": {
+              "description": "New task text.",
+              "type": "string",
+              "minLength": 1
+            },
+            "completed": {
+              "description": "Mark the task complete or incomplete.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "todo": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "completed",
+                "created_at"
+              ]
+            }
+          },
+          "required": [
+            "todo"
+          ]
+        }
+      },
+      {
+        "name": "delete_todo",
+        "title": "Delete task",
+        "description": "Permanently delete one of the signed-in user's tasks.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The task id to delete."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        }
+      }
+    ]
+  }
+}
