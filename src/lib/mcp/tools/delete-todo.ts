@@ -9,6 +9,7 @@ export default defineTool({
   inputSchema: {
     id: z.string().describe("The task id to delete."),
   },
+  outputSchema: { id: z.string() },
   annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
   handler: async ({ id }, ctx) => {
     if (!ctx.isAuthenticated()) throw new ToolError("Not authenticated");

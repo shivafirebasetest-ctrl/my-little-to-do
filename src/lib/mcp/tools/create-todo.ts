@@ -2,6 +2,14 @@ import { defineTool, ToolError } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { supabaseForUser } from "../supabase";
 
+const TodoShape = z.object({
+  id: z.string(),
+  text: z.string(),
+  completed: z.boolean(),
+  created_at: z.string(),
+});
+
+
 export default defineTool({
   name: "create_todo",
   title: "Create task",
@@ -9,6 +17,7 @@ export default defineTool({
   inputSchema: {
     text: z.string().trim().min(1).describe("What needs to be done."),
   },
+  outputSchema: { todo: TodoShape },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ text }, ctx) => {
     if (!ctx.isAuthenticated()) throw new ToolError("Not authenticated");
